@@ -10,10 +10,11 @@
         <entry key="..\:/projekti/app/src/main/res/layout/activity_main2.xml" value="0.18802083333333333" />
         <entry key="..\:/projekti/app/src/main/res/layout/activity_player.xml" value="0.15885416666666666" />
         <entry key="..\:/projekti/app/src/main/res/layout/activity_youtube_player.xml" value="0.15885416666666666" />
-        <entry key="..\:/projekti/app/src/main/res/layout/activity_ytplayer.xml" value="0.13541666666666666" />
+        <entry key="..\:/projekti/app/src/main/res/layout/activity_ytplayer.xml" value="0.176" />
         <entry key="..\:/projekti/app/src/main/res/layout/content_main.xml" value="0.36666666666666664" />
         <entry key="..\:/projekti/app/src/main/res/layout/content_standalone.xml" value="0.36666666666666664" />
         <entry key="..\:/projekti/app/src/main/res/layout/content_you_tube.xml" value="0.36666666666666664" />
+        <entry key="..\:/projekti/app/src/main/res/layout/content_youtube.xml" value="0.2890625" />
         <entry key="..\:/projekti/app/src/main/res/layout/fragment_home.xml" value="0.11302083333333333" />
         <entry key="..\:/projekti/app/src/main/res/layout/fragment_profile.xml" value="0.19270833333333334" />
         <entry key="..\:/projekti/app/src/main/res/layout/video_list_item.xml" value="0.36666666666666664" />
