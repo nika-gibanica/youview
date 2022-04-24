@@ -7,9 +7,9 @@ import org.apache.http.message.BasicNameValuePair;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UploadVersions extends AsyncTask<String, String, String> {
+public class UploadDeviceInfo extends AsyncTask<String, String, String> {
     // url to create new product
-    private static String url_upload_version = "https://youview.com.hr/deviceLog.php";
+    private static String url_upload_device = "https://youview.com.hr/deviceLog.php";
 
     /**
      * Before starting background thread Show Progress Dialog
@@ -47,7 +47,7 @@ public class UploadVersions extends AsyncTask<String, String, String> {
 
         JSONParser jparser = new JSONParser();
         try {
-            String response = jparser.makeHttpRequest(url_upload_version, "POST", params);
+            String response = jparser.makeHttpRequest(url_upload_device, "POST", params);
             return response;
         } catch (Exception e) {
             return e.getMessage();

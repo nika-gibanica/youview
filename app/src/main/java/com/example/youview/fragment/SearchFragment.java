@@ -49,7 +49,6 @@ public class SearchFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_search, container, false);
-        // Inflate the layout for this fragment
         input_query = view.findViewById(R.id.input_query);
         btn_search = view.findViewById(R.id.btn_search);
         RecyclerView rv = view.findViewById(R.id.recycler_search);
@@ -80,16 +79,20 @@ public class SearchFragment extends Fragment {
         data.enqueue(new Callback<ModelHome>() {
             @Override
             public void onResponse(Call<ModelHome> call, Response<ModelHome> response) {
-                if (response.errorBody() != null){
-                    Log.w(TAG, "onResponse search : "+ response.errorBody().toString() );
-                } else {
-                    ModelHome mh = response.body();
-                    if (mh.getItems().size() != 0){
-                        videoList.addAll(mh.getItems());
-                        adapter.notifyDataSetChanged();
+                try {
+                    if (response.errorBody() != null) {
+                        Log.w(TAG, "onResponse search : " + response.errorBody().string());
                     } else {
-                        Toast.makeText(getContext(), "No video", Toast.LENGTH_SHORT).show();
+                        ModelHome mh = response.body();
+                        if (mh.getItems().size() != 0) {
+                            videoList.addAll(mh.getItems());
+                            adapter.notifyDataSetChanged();
+                        } else {
+                            Toast.makeText(getContext(), "No video", Toast.LENGTH_SHORT).show();
+                        }
                     }
+                } catch (Exception e){
+                    Log.e(TAG, "onFailure search: ", e);
                 }
             }
 
@@ -99,5 +102,4 @@ public class SearchFragment extends Fragment {
             }
         });
     }
-
 }

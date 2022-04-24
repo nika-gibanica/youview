@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.Constraints;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -105,20 +106,25 @@ public class HomeFragment extends Fragment {
         data.enqueue(new Callback<ModelHome>() {
             @Override
             public void onResponse(Call<ModelHome> call, Response<ModelHome> response) {
-                if (response.errorBody() != null){
-                    Log.w(TAG, "onResponse: " + response.errorBody() );
-                    loading1.setVisibility(View.GONE);
-                    loading2.setVisibility(View.GONE);
-                    Toast.makeText(getContext(), response.errorBody().toString(), Toast.LENGTH_SHORT).show();
-                } else {
-                    ModelHome mh = response.body();
-                    videoList.addAll(mh.getItems());
-                    adapter.notifyDataSetChanged();
-                    loading1.setVisibility(View.GONE);
-                    loading2.setVisibility(View.GONE);
-                    if (mh.getNextPageToken() != null){
-                        nextPageToken = mh.getNextPageToken();
+                try {
+                    if (response.errorBody() != null){
+                        String error = response.errorBody().string();
+                        Log.w(TAG, "onResponse: " + "daily quota exceeded");
+                        loading1.setVisibility(View.GONE);
+                        loading2.setVisibility(View.GONE);
+                        Toast.makeText(getContext(), error, Toast.LENGTH_SHORT).show();
+                    } else {
+                        ModelHome mh = response.body();
+                        videoList.addAll(mh.getItems());
+                        adapter.notifyDataSetChanged();
+                        loading1.setVisibility(View.GONE);
+                        loading2.setVisibility(View.GONE);
+                        if (mh.getNextPageToken() != null){
+                            nextPageToken = mh.getNextPageToken();
+                        }
                     }
+                } catch (Exception e){
+                    Log.e(Constraints.TAG, "onFailure search: ", e);
                 }
             }
 

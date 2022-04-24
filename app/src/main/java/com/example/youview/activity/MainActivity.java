@@ -15,7 +15,7 @@ import android.os.StrictMode;
 import android.provider.Settings;
 import android.view.MenuItem;
 
-import com.example.youview.utils.UploadVersions;
+import com.example.youview.utils.UploadDeviceInfo;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.example.youview.R;
 import com.example.youview.fragment.HomeFragment;
@@ -28,8 +28,40 @@ public class MainActivity extends AppCompatActivity {
 
     private BottomNavigationView menuBawah;
 
-    private String android_id;
-    int videoNumber;
+    public static String android_id;
+    public static int videoNumber;
+
+    public static String lastEvent;
+    public static String lastUploaded;
+
+    public static int getVideoNumber() {
+        return videoNumber;
+    }
+
+    public static void setVideoNumber(int videoNumber) {
+        MainActivity.videoNumber = videoNumber;
+    }
+
+
+    public static String getAndroidId() {
+        return android_id;
+    }
+
+    public static String getLastEvent() {
+        return lastEvent;
+    }
+
+    public static void setLastEvent(String lastEvent) {
+        MainActivity.lastEvent = lastEvent;
+    }
+
+    public static String getLastUploaded() {
+        return lastUploaded;
+    }
+
+    public static void setLastUploaded(String lastUploaded) {
+        MainActivity.lastUploaded = lastUploaded;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
             StrictMode.setThreadPolicy(policy);
         }
 
-        UploadVersions versions = new UploadVersions();
+        UploadDeviceInfo versions = new UploadDeviceInfo();
         versions.doInBackground(android_id, version, api, dimensions, versionName, device, model);
 
         SharedPreferences sh = getSharedPreferences("com.example.youview", MODE_PRIVATE);
