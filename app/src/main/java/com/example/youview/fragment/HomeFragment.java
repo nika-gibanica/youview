@@ -93,7 +93,93 @@ public class HomeFragment extends Fragment {
 
     private void getJson() {
         loading1.setVisibility(View.VISIBLE);
-        String url = "https://youtube.googleapis.com/youtube/v3/search?part=snippet&chart=mostPopular&regionCode=HR&key=AIzaSyBKMUgqfU8OsRIMFzl76335wB65Z-67X7M";
+        String url = YoutubeAPI.BASE_URL + YoutubeAPI.sch + YoutubeAPI.part + YoutubeAPI.pop + YoutubeAPI.loc + YoutubeAPI.KEY2 + YoutubeAPI.mx + YoutubeAPI.ord;
+        if (nextPageToken != ""){
+            url = url + YoutubeAPI.NPT + nextPageToken;
+            loading1.setVisibility(View.GONE);
+            loading2.setVisibility(View.VISIBLE);
+        }
+        if (nextPageToken == null){
+            return;
+        }
+        Call<ModelHome> data = YoutubeAPI.getVideo().getHomeVideo(url);
+        data.enqueue(new Callback<ModelHome>() {
+            @Override
+            public void onResponse(Call<ModelHome> call, Response<ModelHome> response) {
+                try {
+                    if (response.errorBody() != null){
+                        getJson2();
+                    } else {
+                        ModelHome mh = response.body();
+                        videoList.addAll(mh.getItems());
+                        adapter.notifyDataSetChanged();
+                        loading1.setVisibility(View.GONE);
+                        loading2.setVisibility(View.GONE);
+                        if (mh.getNextPageToken() != null){
+                            nextPageToken = mh.getNextPageToken();
+                        }
+                    }
+                } catch (Exception e){
+                    Log.e(Constraints.TAG, "onFailure search: ", e);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ModelHome> call, Throwable t) {
+                Log.e(TAG, "onFailure: ", t);
+                loading1.setVisibility(View.GONE);
+                loading2.setVisibility(View.GONE);
+                Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void getJson2() {
+        loading1.setVisibility(View.VISIBLE);
+        String url = YoutubeAPI.BASE_URL + YoutubeAPI.sch + YoutubeAPI.KEY + YoutubeAPI.part + YoutubeAPI.pop + YoutubeAPI.loc + YoutubeAPI.mx + YoutubeAPI.ord;
+        if (nextPageToken != ""){
+            url = url + YoutubeAPI.NPT + nextPageToken;
+            loading1.setVisibility(View.GONE);
+            loading2.setVisibility(View.VISIBLE);
+        }
+        if (nextPageToken == null){
+            return;
+        }
+        Call<ModelHome> data = YoutubeAPI.getVideo().getHomeVideo(url);
+        data.enqueue(new Callback<ModelHome>() {
+            @Override
+            public void onResponse(Call<ModelHome> call, Response<ModelHome> response) {
+                try {
+                    if (response.errorBody() != null){
+                        getJson3();
+                    } else {
+                        ModelHome mh = response.body();
+                        videoList.addAll(mh.getItems());
+                        adapter.notifyDataSetChanged();
+                        loading1.setVisibility(View.GONE);
+                        loading2.setVisibility(View.GONE);
+                        if (mh.getNextPageToken() != null){
+                            nextPageToken = mh.getNextPageToken();
+                        }
+                    }
+                } catch (Exception e){
+                    Log.e(Constraints.TAG, "onFailure search: ", e);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ModelHome> call, Throwable t) {
+                Log.e(TAG, "onFailure: ", t);
+                loading1.setVisibility(View.GONE);
+                loading2.setVisibility(View.GONE);
+                Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void getJson3() {
+        loading1.setVisibility(View.VISIBLE);
+        String url = YoutubeAPI.BASE_URL + YoutubeAPI.sch + YoutubeAPI.KEY + YoutubeAPI.part + YoutubeAPI.pop + YoutubeAPI.loc + YoutubeAPI.mx + YoutubeAPI.ord;
         if (nextPageToken != ""){
             url = url + YoutubeAPI.NPT + nextPageToken;
             loading1.setVisibility(View.GONE);
@@ -109,10 +195,10 @@ public class HomeFragment extends Fragment {
                 try {
                     if (response.errorBody() != null){
                         String error = response.errorBody().string();
-                        Log.w(TAG, "onResponse: " + "daily quota exceeded");
+                        Log.w(TAG, "onResponse: " + error);
                         loading1.setVisibility(View.GONE);
                         loading2.setVisibility(View.GONE);
-                        Toast.makeText(getContext(), error, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "Daily quota exceeded", Toast.LENGTH_SHORT).show();
                     } else {
                         ModelHome mh = response.body();
                         videoList.addAll(mh.getItems());

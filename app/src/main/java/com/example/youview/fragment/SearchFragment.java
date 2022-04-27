@@ -73,7 +73,73 @@ public class SearchFragment extends Fragment {
     }
 
     private void getJson(String query) {
-        String url = YoutubeAPI.BASE_URL + YoutubeAPI.sch + YoutubeAPI.KEY + YoutubeAPI.mx + YoutubeAPI.ord
+        String url = YoutubeAPI.BASE_URL + YoutubeAPI.sch + YoutubeAPI.KEY + YoutubeAPI.loc + YoutubeAPI.mx + YoutubeAPI.ord
+                + YoutubeAPI.part + YoutubeAPI.query + query + YoutubeAPI.allTypes;
+        Call<ModelHome> data = YoutubeAPI.getVideo().getHomeVideo(url);
+        data.enqueue(new Callback<ModelHome>() {
+            @Override
+            public void onResponse(Call<ModelHome> call, Response<ModelHome> response) {
+                try {
+                    if (response.errorBody() != null) {
+                        Log.w(TAG, "onResponse search : " + response.errorBody().string());
+                        getJson3(query);
+                    } else {
+                        ModelHome mh = response.body();
+                        if (mh.getItems().size() != 0) {
+                            videoList.clear();
+                            videoList.addAll(mh.getItems());
+                            adapter.notifyDataSetChanged();
+                        } else {
+                            Toast.makeText(getContext(), "No video", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                } catch (Exception e){
+                    Log.e(TAG, "onFailure search: ", e);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ModelHome> call, Throwable t) {
+                Log.e(TAG, "onFailure search: ", t);
+            }
+        });
+    }
+
+    private void getJson2(String query) {
+        String url = YoutubeAPI.BASE_URL + YoutubeAPI.sch + YoutubeAPI.KEY2 + YoutubeAPI.loc + YoutubeAPI.mx + YoutubeAPI.ord
+                + YoutubeAPI.part + YoutubeAPI.query + query + YoutubeAPI.allTypes;
+        Call<ModelHome> data = YoutubeAPI.getVideo().getHomeVideo(url);
+        data.enqueue(new Callback<ModelHome>() {
+            @Override
+            public void onResponse(Call<ModelHome> call, Response<ModelHome> response) {
+                try {
+                    if (response.errorBody() != null) {
+                        Log.w(TAG, "onResponse search : " + response.errorBody().string());
+                        getJson3(query);
+                    } else {
+                        ModelHome mh = response.body();
+                        if (mh.getItems().size() != 0) {
+                            videoList.clear();
+                            videoList.addAll(mh.getItems());
+                            adapter.notifyDataSetChanged();
+                        } else {
+                            Toast.makeText(getContext(), "No video", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                } catch (Exception e){
+                    Log.e(TAG, "onFailure search: ", e);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ModelHome> call, Throwable t) {
+                Log.e(TAG, "onFailure search: ", t);
+            }
+        });
+    }
+
+    private void getJson3(String query) {
+        String url = YoutubeAPI.BASE_URL + YoutubeAPI.sch + YoutubeAPI.KEY3 + YoutubeAPI.loc + YoutubeAPI.mx + YoutubeAPI.ord
                 + YoutubeAPI.part + YoutubeAPI.query + query + YoutubeAPI.allTypes;
         Call<ModelHome> data = YoutubeAPI.getVideo().getHomeVideo(url);
         data.enqueue(new Callback<ModelHome>() {
@@ -85,6 +151,7 @@ public class SearchFragment extends Fragment {
                     } else {
                         ModelHome mh = response.body();
                         if (mh.getItems().size() != 0) {
+                            videoList.clear();
                             videoList.addAll(mh.getItems());
                             adapter.notifyDataSetChanged();
                         } else {

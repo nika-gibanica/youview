@@ -36,7 +36,7 @@ public class YTPlayerActivity extends YouTubeBaseActivity implements
 
         ytPlayer = findViewById(R.id.yt_player);
 
-        ytPlayer.initialize(YoutubeAPI.KEY, this);
+        ytPlayer.initialize(YoutubeAPI.KEY4, this);
     }
 
 
@@ -60,13 +60,13 @@ public class YTPlayerActivity extends YouTubeBaseActivity implements
         public void onPlaying() {
             if (MainActivity.getLastEvent() == "pause") {
                 uploadEvent("play");
+                MainActivity.setLastEvent("play");
             }
-            MainActivity.setLastEvent("play");
         }
 
         @Override
         public void onPaused() {
-            if (MainActivity.getLastEvent() != "pause" && MainActivity.getLastUploaded() != "pause") {
+            if (MainActivity.getLastEvent() != "pause") {
                 uploadEvent("pause");
             }
             MainActivity.setLastEvent("pause");
@@ -87,7 +87,10 @@ public class YTPlayerActivity extends YouTubeBaseActivity implements
             if (MainActivity.getLastEvent() != "video started") {
                 uploadEvent("seek");
             }
-            MainActivity.setLastEvent("seek");
+
+            if (MainActivity.getLastEvent() != "pause") {
+                MainActivity.setLastEvent("seek");
+            }
         }
     };
 
@@ -128,9 +131,10 @@ public class YTPlayerActivity extends YouTubeBaseActivity implements
 
         @Override
         public void onVideoEnded() {
-            uploadEvent("video ended");
-            MainActivity.setLastEvent("video ended");
-
+            if (MainActivity.getLastUploaded() != "exit fullscreen") {
+                uploadEvent("video ended");
+                MainActivity.setLastEvent("video ended");
+            }
         }
 
         @Override
@@ -143,13 +147,23 @@ public class YTPlayerActivity extends YouTubeBaseActivity implements
         @Override
         public void onFullscreen(boolean b) {
             if (b == true && MainActivity.getLastUploaded() != "enter fullscreen") {
+                if (MainActivity.getLastEvent() != "pause") {
+                    MainActivity.setLastEvent("enter fullscreen");
+                } else {
+                    uploadEvent("play");
+                    MainActivity.setLastEvent("play");
+                }
                 uploadEvent("enter fullscreen");
-                MainActivity.setLastEvent("enter fullscreen");
             }
 
             if (b == false) {
+                if (MainActivity.getLastEvent() != "pause") {
+                    MainActivity.setLastEvent("exit fullscreen");
+                }  else {
+                    uploadEvent("play");
+                    MainActivity.setLastEvent("play");
+                }
                 uploadEvent("exit fullscreen");
-                MainActivity.setLastEvent("exit fullscreen");
             }
         }
 

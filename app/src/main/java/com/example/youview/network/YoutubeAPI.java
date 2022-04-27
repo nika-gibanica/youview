@@ -12,8 +12,11 @@ public class YoutubeAPI {
 
     public static final String BASE_URL = "https://www.googleapis.com/youtube/v3/";
     public static final String KEY = "key=AIzaSyBKMUgqfU8OsRIMFzl76335wB65Z-67X7M";
+    public static final String KEY2 = "key=AIzaSyDrGbV4DHULwsxKnaNHyiHyuyT895cg6gQ";
+    public static final String KEY3 = "key=AIzaSyAvlnUbL4Bqcw04HQeND5pmsHfpJglaiy0";
+    public static final String KEY4 = "key=AIzaSyB6W-7XQmx7qX_E4J5iBuBZcv1UeenTU0M";
     public static final String sch = "search?";
-    public static final String mx = "&maxResults=20";
+    public static final String mx = "&maxResults=100";
     public static final String ord = "&order=viewCount";
     public static final String part = "&part=snippet";
     public static final String NPT = "&pageToken=";
