@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
 import android.widget.Toast;
@@ -35,7 +36,6 @@ public class YTPlayerActivity extends YouTubeBaseActivity implements
         videoId = data.getStringExtra("video_id");
 
         ytPlayer = findViewById(R.id.yt_player);
-
         ytPlayer.initialize(YoutubeAPI.KEY4, this);
     }
 
@@ -131,7 +131,7 @@ public class YTPlayerActivity extends YouTubeBaseActivity implements
 
         @Override
         public void onVideoEnded() {
-            if (MainActivity.getLastUploaded() != "exit fullscreen") {
+            if (MainActivity.getLastEvent() != "video ended") {
                 uploadEvent("video ended");
                 MainActivity.setLastEvent("video ended");
             }
@@ -148,7 +148,9 @@ public class YTPlayerActivity extends YouTubeBaseActivity implements
         public void onFullscreen(boolean b) {
             if (b == true && MainActivity.getLastUploaded() != "enter fullscreen") {
                 if (MainActivity.getLastEvent() != "pause") {
-                    MainActivity.setLastEvent("enter fullscreen");
+                    if (MainActivity.getLastEvent() != "video ended") {
+                        MainActivity.setLastEvent("enter fullscreen");
+                    }
                 } else {
                     uploadEvent("play");
                     MainActivity.setLastEvent("play");
@@ -158,7 +160,9 @@ public class YTPlayerActivity extends YouTubeBaseActivity implements
 
             if (b == false) {
                 if (MainActivity.getLastEvent() != "pause") {
-                    MainActivity.setLastEvent("exit fullscreen");
+                    if (MainActivity.getLastEvent() != "video ended") {
+                        MainActivity.setLastEvent("exit fullscreen");
+                    }
                 }  else {
                     uploadEvent("play");
                     MainActivity.setLastEvent("play");

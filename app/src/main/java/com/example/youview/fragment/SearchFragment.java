@@ -61,6 +61,7 @@ public class SearchFragment extends Fragment {
         btn_search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 if (!TextUtils.isEmpty(input_query.getText().toString())){
                     getJson(input_query.getText().toString());
                 } else {

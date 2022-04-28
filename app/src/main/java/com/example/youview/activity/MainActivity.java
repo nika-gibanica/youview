@@ -95,7 +95,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-
     }
 
     private void setFragment(Fragment fragment) {
@@ -124,6 +123,8 @@ public class MainActivity extends AppCompatActivity {
 
         SharedPreferences sh = getSharedPreferences("com.example.youview", MODE_PRIVATE);
         videoNumber = sh.getInt("videoNumber", 0);
+
+
     }
 
     private String getYtVersion(String packageName, PackageManager packageManager) {
